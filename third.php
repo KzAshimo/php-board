@@ -4,18 +4,23 @@ session_start();
 
 // フォームから送信されたデータを受け取り、sessionに保存
 if($_SERVER["REQUEST_METHOD"] === "POST"){
-    $write = $_POST["text"];
+    if(isset($_POST["reset"])){ //name='reset'のボタンクリックの処理
+        unset($_SESSION["board"]); //投稿内容を削除
+
+    }elseif(isset($_POST["text"])){
+    $write = $_POST["text"] ?? "";
 
     if(!empty($write)){
         $_SESSION["board"][] = $write;
-    }
+    }}
 };
 
 // ui
 echo "<form action='third.php' method='post'>";
 echo "<label>kj-ban</label><br>";
 echo "<textarea name='text' placeholder='入力'></textarea><br>";
-echo "<button>出力</button>";
+echo "<button type='submit'>出力</button>";
+echo "<button type='submit' name='reset' value='reset'>リセット</button>";
 echo "</form>";
 
 echo "<h3>下記内容</h3>";
