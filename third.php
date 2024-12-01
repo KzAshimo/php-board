@@ -27,7 +27,7 @@ echo "<h3>下記内容</h3>";
 // session内に保存された投稿内容を一覧表示
 if(!empty($_SESSION["board"])){
     foreach($_SESSION["board"] as $post){
-        echo "<p>]{$post}</p>";
+        echo "<p>{$post}</p>";
     }
 }
 
