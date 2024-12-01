@@ -1,11 +1,23 @@
 <?php
 require_once "../db/connect.php"; //ファイル読み込み (once)1度のみ読み込み
 
+if($_SERVER["REQUEST_METHOD"] === "POST"){ //form送信時に実施
+$name = $_POST[`name`]; //フォームから送信された"name"の値を$nameに代入
+
+if(!empty($name)){ //$nameが空でないなら実施
+    $sql = "INSERT INTO `name` (`name`) VALUES (:name)"; //sql文
+    $stmt = $pdo->prepare($sql); //sql文を実行する準備(プレースホルダーの準備)
+    $stmt->bindValue(":name", $name,PDO::PARAM_STR); //プレースホルダー　":name"を$nameにバインド
+    $stmt->execute(); //クエリを実施
+}else{
+    echo "入力して下さい";
+}}
+
+
 $sql = "SELECT * FROM name ORDER BY id DESC"; //sql文
 $stmt = $pdo->query($sql); //pdoオブジェクトでクエリを実施(権限問題?)
 $posts = $stmt->fetchAll(PDO::FETCH_ASSOC); //クエリを取り出し
 ?>
-
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -41,21 +53,3 @@ if ($posts) {
 
 
 
-
-<!-- 以下修正 -->
-
-
-<?php
-
-$name = $_POST["name"];
-
-if(!empty($name)){
-    $sql = "INSERT INTO `name` (`name`) VALUES (:name)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(":name", $name,PDO::PARAM_STR);
-    $stmt->execute();
-}else{
-    echo "入力して下さい";
-}
-
-?>
